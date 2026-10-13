@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Concrete Volume & Material Calculator — Free M15/M20/M25 Mix Estimator | BuildScope AI</title>
+  <meta name="description" content="Calculate concrete volume for slabs, footings, beams, and columns in m³, ft³, and yards. Estimates cement bags, sand, coarse aggregates, and water with dry volume factor 1.54.">
+  <meta name="keywords" content="concrete calculator, concrete mix ratio, concrete volume m3, cement bags calculator, sand aggregate estimator, civil engineering concrete, M20 mix ratio, dry volume factor 1.54">
+  <link rel="canonical" href="https://buildscope.ai/tools/concrete-calculator">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://buildscope.ai/tools/concrete-calculator">
+  <meta property="og:title" content="Concrete Volume & Material Calculator | BuildScope AI">
+  <meta property="og:description" content="Free civil engineering concrete calculator for slabs, beams, columns, and footings. Estimates cement bags, sand, and aggregate using dry volume factor 1.54.">
+  <meta property="og:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Concrete Volume & Material Calculator | BuildScope AI">
+  <meta name="twitter:description" content="Calculate concrete volumes and material procurement quantities (cement, sand, aggregates) with engineering precision.">
+  <meta name="twitter:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/apple-design-system.css">
+
+  <!-- Structured Data JSON-LD Breadcrumbs and WebApplication -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://buildscope.ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://buildscope.ai/tools"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Concrete Calculator",
+            "item": "https://buildscope.ai/tools/concrete-calculator"
+          }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "BuildScope AI Concrete Volume & Mix Estimator",
+        "applicationCategory": "EngineeringApplication",
+        "operatingSystem": "All modern browsers",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-parchment">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-link">
+        <img src="/assets/images/logo.svg" alt="BuildScope AI" width="28" height="28">
+        <span>BuildScope <span style="font-weight:400;color:var(--color-primary);">AI</span></span>
+        <span class="brand-tag">CIVIL</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/tools" class="nav-link">Tools</a></li>
+          <li><a href="/tools/concrete-calculator" class="nav-link active">Concrete</a></li>
+          <li><a href="/tools/steel-weight-calculator" class="nav-link">Steel Rebar</a></li>
+          <li><a href="/tools/beam-calculator" class="nav-link">Beam Analysis</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/app" class="nav-link">Workspace Demo</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/app" class="btn btn-secondary btn-sm btn-login">Sign in</a>
+        <a href="/tools" class="btn btn-primary btn-sm">All Tools</a>
+        <button class="mobile-nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="section">
+    <div class="container">
+      <!-- Breadcrumb Nav -->
+      <nav aria-label="Breadcrumb" style="font-size:13px;color:var(--color-ink-muted-48);margin-bottom:20px;">
+        <a href="/" style="color:var(--color-ink-muted-48);">Home</a> / 
+        <a href="/tools" style="color:var(--color-ink-muted-48);">Tools</a> / 
+        <span style="color:var(--color-ink);">Concrete Calculator</span>
+      </nav>
+
+      <div style="margin-bottom:36px;">
+        <span class="eyebrow">Materials & Procurement Engine</span>
+        <h1 style="font-size:clamp(32px, 4vw, 44px);margin-bottom:10px;">Concrete Volume & Material Estimator</h1>
+        <p class="lead" style="max-width:820px;">
+          Accurately calculate geometric wet concrete volumes and estimate required dry materials (cement bags, sand, coarse aggregate, and water) applying standard civil engineering dry-volume conversion factor 1.54.
+        </p>
+      </div>
+
+      <div class="calc-layout">
+        <!-- Left Column: Inputs Form -->
+        <div class="calc-panel">
+          <h2 style="font-size:20px;margin-bottom:20px;">1. Structural Element Dimensions</h2>
+          <form id="concrete-calc-form" novalidate>
+            <!-- Element Shape -->
+            <div class="form-group">
+              <label for="element-shape" class="form-label">
+                <span>Member Geometry</span>
+                <span class="form-hint">Shape preset</span>
+              </label>
+              <select id="element-shape" class="select-control">
+                <option value="slab">Rectangular Slab / Floor</option>
+                <option value="beam">Rectangular Beam</option>
+                <option value="column">Rectangular Column</option>
+                <option value="footing">Isolated Pad Footing</option>
+                <option value="cylinder">Circular Column / Pier / Well</option>
+              </select>
+            </div>
+
+            <!-- Unit Selector -->
+            <div class="form-group">
+              <label for="dim-unit" class="form-label">
+                <span>Dimension Units</span>
+                <span class="form-hint">Converted to meters internally</span>
+              </label>
+              <select id="dim-unit" class="select-control">
+                <option value="m" selected>Meters (m)</option>
+                <option value="mm">Millimeters (mm)</option>
+                <option value="cm">Centimeters (cm)</option>
+                <option value="ft">Feet (ft)</option>
+                <option value="in">Inches (in)</option>
+              </select>
+            </div>
+
+            <!-- Dimension Fields -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label id="length-label" for="dim-length" class="form-label">Length (L)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="dim-length" class="input-control" value="6.0" min="0.01" step="any">
+                </div>
+              </div>
+
+              <div class="form-group" id="width-group">
+                <label for="dim-width" class="form-label">Width (W)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="dim-width" class="input-control" value="4.0" min="0.01" step="any">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label id="depth-label" for="dim-depth" class="form-label">Thickness / Depth (D)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="dim-depth" class="input-control" value="0.15" min="0.01" step="any">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="element-count" class="form-label">Number of Elements</label>
+                <div class="input-with-unit">
+                  <input type="number" id="element-count" class="input-control" value="1" min="1" step="1">
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="wastage-percent" class="form-label">
+                <span>Wastage & Spillage Allowance</span>
+                <span class="form-hint">Typical 3% to 5%</span>
+              </label>
+              <div class="input-with-unit">
+                <input type="number" id="wastage-percent" class="input-control" value="5" min="0" max="25" step="0.5">
+                <div class="unit-addon">%</div>
+              </div>
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--color-hairline-soft);margin:24px 0;">
+
+            <h2 style="font-size:20px;margin-bottom:16px;">2. Mix Ratio & Material Assumptions</h2>
+
+            <div class="form-group">
+              <label for="concrete-mix" class="form-label">
+                <span>Concrete Nominal Mix Grade</span>
+                <span class="form-hint">Cement : Sand : Coarse Aggregate</span>
+              </label>
+              <select id="concrete-mix" class="select-control">
+                <option value="M20" selected>M20 — 1 : 1.5 : 3 (Standard Structural Slab/Beam)</option>
+                <option value="M25">M25 — 1 : 1 : 2 (Heavy Structural Columns/Foundations)</option>
+                <option value="M15">M15 — 1 : 2 : 4 (PCC / General Plain Concrete)</option>
+                <option value="M10">M10 — 1 : 3 : 6 (Sub-base / Leveling Course)</option>
+                <option value="custom">Custom Specified Mix Ratio</option>
+              </select>
+            </div>
+
+            <!-- Custom Mix Grid -->
+            <div id="custom-mix-group" style="display:none;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px;">
+              <div class="form-group">
+                <label for="custom-cement" class="form-label">Cement Part</label>
+                <input type="number" id="custom-cement" class="select-control" value="1" step="0.1">
+              </div>
+              <div class="form-group">
+                <label for="custom-sand" class="form-label">Sand Part</label>
+                <input type="number" id="custom-sand" class="select-control" value="1.5" step="0.1">
+              </div>
+              <div class="form-group">
+                <label for="custom-aggregate" class="form-label">Agg Part</label>
+                <input type="number" id="custom-aggregate" class="select-control" value="3" step="0.1">
+              </div>
+            </div>
+
+            <!-- Actions Bar -->
+            <div style="display:flex;gap:12px;margin-top:28px;">
+              <button type="button" id="calc-reset-btn" class="btn btn-secondary" style="flex:1;">Reset</button>
+              <button type="button" id="calc-export-btn" class="btn btn-primary" style="flex:2;">Export Schedule to CSV</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Live Results Panel -->
+        <div class="calc-results-panel" id="concrete-summary-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span class="eyebrow" style="margin-bottom:0;">Calculated Output</span>
+            <button class="btn btn-sm btn-secondary" data-copy-target="concrete-summary-card" title="Copy results summary">Copy Results</button>
+          </div>
+
+          <!-- Hero Metric: Wet Volume -->
+          <div class="metric-card-hero">
+            <div class="metric-label">Total Concrete Volume (With Wastage)</div>
+            <div class="metric-value-huge">
+              <span id="res-volume-m3">3.78</span><span class="metric-unit">m³</span>
+            </div>
+            <div style="font-size:14px;color:var(--color-ink-muted-48);margin-top:4px;">
+              <span id="res-volume-cft">133.49</span> ft³ (cft) • <span id="res-volume-yards">4.94</span> cubic yards
+            </div>
+          </div>
+
+          <!-- Geometric Subcard Breakdown -->
+          <div class="metrics-subgrid">
+            <div class="metric-subcard">
+              <div class="metric-label">Net Geometric Volume</div>
+              <div class="metric-subvalue" id="res-net-volume">3.60 m³</div>
+            </div>
+            <div class="metric-subcard">
+              <div class="metric-label">Assumed Dry Volume (x1.54)</div>
+              <div class="metric-subvalue" id="res-dry-volume">5.82 m³</div>
+            </div>
+          </div>
+
+          <h3 style="font-size:15px;text-transform:uppercase;letter-spacing:0.05em;color:var(--color-ink-muted-48);margin-bottom:12px;">Estimated Material Breakdown</h3>
+
+          <div style="background:#fff;border:1px solid var(--color-hairline-soft);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+              <div>
+                <strong style="color:var(--color-ink);font-size:14px;">Cement Bags (50 kg)</strong>
+                <div style="font-size:12px;color:var(--color-ink-muted-48);">Density 1440 kg/m³</div>
+              </div>
+              <div id="res-cement-bags" style="font-weight:700;color:var(--color-primary);font-size:16px;">31 bags (1,525 kg)</div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+              <div>
+                <strong style="color:var(--color-ink);font-size:14px;">Sand (Fine Aggregate)</strong>
+                <div style="font-size:12px;color:var(--color-ink-muted-48);">Bulk density ~1600 kg/m³</div>
+              </div>
+              <div id="res-sand-qty" style="font-weight:600;font-size:15px;">2.54 T (56.0 cft)</div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+              <div>
+                <strong style="color:var(--color-ink);font-size:14px;">Coarse Aggregate (Grit/Stone)</strong>
+                <div style="font-size:12px;color:var(--color-ink-muted-48);">10mm to 20mm aggregate</div>
+              </div>
+              <div id="res-agg-qty" style="font-weight:600;font-size:15px;">4.76 T (112.0 cft)</div>
+            </div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+              <div>
+                <strong style="color:var(--color-ink);font-size:14px;">Water Requirement</strong>
+                <div style="font-size:12px;color:var(--color-ink-muted-48);">Target w/c ratio ~0.45-0.50</div>
+              </div>
+              <div id="res-water-qty" style="font-weight:600;font-size:15px;">837 Liters</div>
+            </div>
+          </div>
+
+          <!-- Real-Time Interactive 3D Structural Visualizer -->
+          <div class="viz-card" style="padding:18px;">
+            <div class="viz-header">
+              <div class="viz-title-group">
+                <span class="viz-title">Real-Time 3D Member Preview</span>
+                <span class="viz-live-indicator"><span class="viz-live-dot"></span> 60 FPS Interactive</span>
+              </div>
+              <div class="segmented-control" style="margin-bottom:0;padding:2px;">
+                <button type="button" class="segmented-option viz-mode-btn active" data-mode="solid" style="padding:4px 10px;font-size:12px;">3D Solid</button>
+                <button type="button" class="segmented-option viz-mode-btn" data-mode="rebar" style="padding:4px 10px;font-size:12px;">Rebar X-Ray</button>
+                <button type="button" class="segmented-option viz-mode-btn" data-mode="materials" style="padding:4px 10px;font-size:12px;">Materials Cutaway</button>
+              </div>
+            </div>
+
+            <div class="viz-canvas-wrapper">
+              <canvas id="concrete-canvas-3d" class="viz-canvas" width="700" height="340"></canvas>
+              <div class="viz-hud-overlay" id="concrete-hud-badge">
+                <strong>M20</strong> • 3.78 m³ • ≈9.1 Tonnes
+              </div>
+            </div>
+
+            <div class="viz-controls-bar">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="color:var(--color-ink-muted-48);">Orbit Angle:</span>
+                <input type="range" id="concrete-orbit-slider" class="range-slider" min="0" max="360" value="35">
+              </div>
+              <div style="font-size:12px;color:var(--color-ink-muted-48);">
+                Drag canvas or slider to rotate in 3D
+              </div>
+            </div>
+          </div>
+
+          <!-- Transparent Engineering Disclaimer Notice -->
+          <div class="engineering-callout">
+            <strong>Engineering Assumption Disclosure:</strong> Dry mix estimation applies the empirical multiplier 1.54 to account for voids in dry ingredients prior to water hydration. Concrete mix proportions shown are nominal standard ratios and should be checked against project grade requirements (e.g. slump, exposure condition, and compressive strength tests) specified by the responsible structural engineer.
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Guide & Formula Explanation for Engineers and Students -->
+      <section class="card" style="margin-top:56px;">
+        <h2 style="font-size:24px;margin-bottom:16px;">Technical Guide: Concrete Volume & Mix Mechanics</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px;">
+          <div>
+            <h3 style="font-size:18px;margin-bottom:8px;">1. Geometric Volume Formulation</h3>
+            <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;margin-bottom:12px;">
+              All inputs are converted to SI meters prior to multiplication to eliminate unit conversion errors. For a rectangular prism of length $L$, width $W$, and depth $D$:
+            </p>
+            <div style="background:#f5f5f7;padding:12px;border-radius:8px;font-family:var(--font-mono);font-size:13px;margin-bottom:14px;">
+              V_wet = (L × W × D) × N × (1 + wastage / 100)
+            </div>
+            <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;">
+              For circular elements, area equals $\pi \times (D/2)^2$, multiplied by height $H$.
+            </p>
+          </div>
+
+          <div>
+            <h3 style="font-size:18px;margin-bottom:8px;">2. Dry Volume Multiplier (1.54 Factor)</h3>
+            <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;margin-bottom:12px;">
+              When dry cement, sand, and stone are mixed with water, sand grains fill the void spaces between aggregate pieces, reducing dry bulk volume by roughly 30% to 35%. Therefore, civil engineering standards require a factor of <strong>1.52 to 1.57</strong> (nominally 1.54) dry material for every cubic meter of hardened wet concrete.
+            </p>
+            <div style="background:#f5f5f7;padding:12px;border-radius:8px;font-family:var(--font-mono);font-size:13px;">
+              V_dry = V_wet × 1.54<br>
+              Cement (kg) = (Cement Ratio / Sum of Ratios) × V_dry × 1440 kg/m³
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BuildScope AI Inc. All rights reserved.</div>
+        <div style="display:flex;gap:18px;">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/engineering-disclaimer">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/ai-engine.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/concrete-calculator.js"></script>
+</body>
+</html>

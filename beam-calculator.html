@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Simply Supported Beam Analysis — Interactive SFD & BMD Calculator | BuildScope AI</title>
+  <meta name="description" content="Calculate support reactions, maximum shear force, and maximum bending moments for simply supported beams with point loads and UDL. Features live dynamic SVG diagrams and equilibrium checks.">
+  <meta name="keywords" content="beam calculator, simply supported beam, SFD BMD calculator, shear force diagram, bending moment diagram, structural analysis, civil engineering mechanics">
+  <link rel="canonical" href="https://buildscope.ai/tools/beam-calculator">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://buildscope.ai/tools/beam-calculator">
+  <meta property="og:title" content="Simply Supported Beam Analysis — SFD & BMD Calculator | BuildScope AI">
+  <meta property="og:description" content="Instant analytical beam solver with live SVG Shear Force and Bending Moment diagrams and static equilibrium verification.">
+  <meta property="og:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Simply Supported Beam Analysis | BuildScope AI">
+  <meta name="twitter:description" content="Instant analytical beam solver with live SVG Shear Force and Bending Moment diagrams.">
+  <meta name="twitter:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/apple-design-system.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://buildscope.ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://buildscope.ai/tools"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Beam Calculator",
+            "item": "https://buildscope.ai/tools/beam-calculator"
+          }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "BuildScope AI Beam Analysis Calculator",
+        "applicationCategory": "EngineeringApplication",
+        "operatingSystem": "All modern browsers",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-parchment">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-link">
+        <img src="/assets/images/logo.svg" alt="BuildScope AI" width="28" height="28">
+        <span>BuildScope <span style="font-weight:400;color:var(--color-primary);">AI</span></span>
+        <span class="brand-tag">CIVIL</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/tools" class="nav-link">Tools</a></li>
+          <li><a href="/tools/concrete-calculator" class="nav-link">Concrete</a></li>
+          <li><a href="/tools/steel-weight-calculator" class="nav-link">Steel Rebar</a></li>
+          <li><a href="/tools/beam-calculator" class="nav-link active">Beam Analysis</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/app" class="nav-link">Workspace Demo</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/app" class="btn btn-secondary btn-sm btn-login">Sign in</a>
+        <a href="/tools" class="btn btn-primary btn-sm">All Tools</a>
+        <button class="mobile-nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="section">
+    <div class="container">
+      <nav aria-label="Breadcrumb" style="font-size:13px;color:var(--color-ink-muted-48);margin-bottom:20px;">
+        <a href="/" style="color:var(--color-ink-muted-48);">Home</a> / 
+        <a href="/tools" style="color:var(--color-ink-muted-48);">Tools</a> / 
+        <span style="color:var(--color-ink);">Beam Analysis Calculator</span>
+      </nav>
+
+      <div style="margin-bottom:36px;">
+        <span class="eyebrow">Structural Mechanics Solver</span>
+        <h1 style="font-size:clamp(32px, 4vw, 44px);margin-bottom:10px;">Simply Supported Beam Analysis</h1>
+        <p class="lead" style="max-width:820px;">
+          Analytical solver for pin-roller simply supported beams under concentrated point loads and full-span uniform distributed loads (UDL). Computes reactions, critical shears, and moments with verifiable equilibrium.
+        </p>
+      </div>
+
+      <div class="calc-layout">
+        <!-- Left Column: Inputs -->
+        <div class="calc-panel">
+          <h2 style="font-size:20px;margin-bottom:20px;">1. Beam Geometry & Load Configuration</h2>
+          <form id="beam-calc-form" novalidate>
+            <div class="form-group">
+              <label for="beam-span" class="form-label">
+                <span>Beam Span Length (L)</span>
+                <span class="form-hint">Meters</span>
+              </label>
+              <div class="input-with-unit">
+                <input type="number" id="beam-span" class="input-control" value="6.0" min="0.5" max="100" step="0.1">
+                <div class="unit-addon">m</div>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="beam-load-case" class="form-label">
+                <span>Applied Load Case</span>
+                <span class="form-hint">Supported boundary states</span>
+              </label>
+              <select id="beam-load-case" class="select-control">
+                <option value="both" selected>Combined: Point Load + Uniform Load (UDL)</option>
+                <option value="point">Single Concentrated Point Load (P)</option>
+                <option value="udl">Uniform Distributed Load Only (w)</option>
+              </select>
+            </div>
+
+            <!-- Point Load Group -->
+            <div id="point-load-group" style="background:#f8fafc;padding:16px;border-radius:10px;margin-bottom:16px;border:1px solid #e2e8f0;">
+              <div style="font-weight:600;font-size:14px;color:#0f172a;margin-bottom:12px;">Concentrated Point Load (P)</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+                <div class="form-group" style="margin-bottom:0;">
+                  <label for="beam-point-load" class="form-label">Magnitude (P)</label>
+                  <div class="input-with-unit">
+                    <input type="number" id="beam-point-load" class="input-control" value="25.0" min="0" step="any">
+                    <div class="unit-addon">kN</div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom:0;">
+                  <label for="beam-point-pos" class="form-label">Position from Left Support (a)</label>
+                  <div class="input-with-unit">
+                    <input type="number" id="beam-point-pos" class="input-control" value="2.5" min="0" step="any">
+                    <div class="unit-addon">m</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- UDL Group -->
+            <div id="udl-group" style="background:#f8fafc;padding:16px;border-radius:10px;margin-bottom:20px;border:1px solid #e2e8f0;">
+              <div style="font-weight:600;font-size:14px;color:#0f172a;margin-bottom:12px;">Uniformly Distributed Load (UDL)</div>
+              <div class="form-group" style="margin-bottom:0;">
+                <label for="beam-udl" class="form-label">Distributed Load Intensity (w)</label>
+                <div class="input-with-unit">
+                  <input type="number" id="beam-udl" class="input-control" value="10.0" min="0" step="any">
+                  <div class="unit-addon">kN/m</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="diagram-box" style="margin-bottom:0;">
+              <div class="diagram-header">
+                <span>Beam Structural Setup</span>
+                <span id="res-beam-eq-badge" class="badge badge-available">✓ ΣFy = 0 (Balanced)</span>
+              </div>
+              <svg id="beam-svg-setup" class="diagram-svg" viewBox="0 0 500 140"></svg>
+            </div>
+          </form>
+        </div>
+
+        <!-- Right Column: Results & Live Diagrams -->
+        <div class="calc-results-panel" id="beam-summary-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span class="eyebrow" style="margin-bottom:0;">Analysis Results</span>
+            <button class="btn btn-sm btn-secondary" data-copy-target="beam-summary-card">Copy Results</button>
+          </div>
+
+          <!-- Hero Metric: Max Bending Moment -->
+          <div class="metric-card-hero">
+            <div class="metric-label">Maximum Bending Moment (Mmax)</div>
+            <div class="metric-value-huge">
+              <span id="res-beam-max-m">65.63</span><span class="metric-unit">kNm</span>
+            </div>
+            <div style="font-size:14px;color:var(--color-ink-muted-48);margin-top:4px;" id="res-beam-max-m-loc">
+              at x = 2.50 m (Sagging / Positive Moment)
+            </div>
+          </div>
+
+          <!-- Subcards: Reactions -->
+          <div class="metrics-subgrid">
+            <div class="metric-subcard">
+              <div class="metric-label">Left Reaction (RA)</div>
+              <div class="metric-subvalue" id="res-beam-ra">44.58 kN</div>
+            </div>
+            <div class="metric-subcard">
+              <div class="metric-label">Right Reaction (RB)</div>
+              <div class="metric-subvalue" id="res-beam-rb">40.42 kN</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--color-hairline-soft);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+              <span style="font-size:14px;color:var(--color-ink-muted-80);">Maximum Shear Force (|Vmax|)</span>
+              <strong id="res-beam-max-v" style="color:var(--color-ink);">44.58 kN</strong>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+              <span style="font-size:14px;color:var(--color-ink-muted-80);">Total Applied Vertical Load</span>
+              <strong id="res-beam-total-load" style="color:var(--color-ink);">85.00 kN</strong>
+            </div>
+          </div>
+
+          <!-- Real-Time Interactive Structural Dynamics Studio -->
+          <div class="viz-card" style="padding:18px;">
+            <div class="viz-header">
+              <div class="viz-title-group">
+                <span class="viz-title">Real-Time Structural Dynamics</span>
+                <span class="viz-live-indicator"><span class="viz-live-dot"></span> 60 FPS Interactive</span>
+              </div>
+              <div class="segmented-control" style="margin-bottom:0;padding:2px;">
+                <button type="button" class="segmented-option beam-mode-btn active" data-mode="all" style="padding:4px 10px;font-size:12px;">SFD & BMD</button>
+                <button type="button" class="segmented-option beam-mode-btn" data-mode="deflection" style="padding:4px 10px;font-size:12px;">Elastic Deflection δ(x)</button>
+                <button type="button" class="segmented-option beam-mode-btn" data-mode="stress" style="padding:4px 10px;font-size:12px;">Stress Fibers</button>
+              </div>
+            </div>
+
+            <div class="viz-canvas-wrapper" style="cursor:crosshair;">
+              <canvas id="beam-canvas-dynamics" class="viz-canvas" width="700" height="380"></canvas>
+              <div class="viz-hud-overlay" id="beam-hud-badge">
+                <strong>RA = 44.6 kN</strong> • <strong>RB = 40.4 kN</strong> • Mmax = 65.6 kNm
+              </div>
+              <div id="beam-probe-hud" class="viz-probe-hud"></div>
+            </div>
+
+            <div class="viz-controls-bar">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="color:var(--color-ink-muted-48);">Load Position (a):</span>
+                <input type="range" id="beam-pos-scrubber" class="range-slider" min="0" max="100" value="42">
+              </div>
+              <div style="font-size:12px;color:var(--color-ink-muted-48);">
+                Hover along beam to inspect Shear & Moment crosshair
+              </div>
+            </div>
+          </div>
+
+          <div class="engineering-callout">
+            <strong>Scope & Safety Boundary:</strong> This calculator solves deterministically for internal statics (reactions, shear, and bending moments). It does not calculate reinforcement area ($A_{st}$), deflection limits, or crack widths until concrete grade, steel yield strength, and structural cross-section properties ($b, d, I_{xx}$) are specified according to design codes (IS 456 / ACI 318).
+          </div>
+        </div>
+      </div>
+
+      <!-- Theory & Benchmark Section -->
+      <section class="card" style="margin-top:48px;">
+        <h2 style="font-size:22px;margin-bottom:16px;">Governing Equilibrium Equations for Simply Supported Beams</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:28px;">
+          <div>
+            <h3 style="font-size:17px;margin-bottom:8px;">1. Point Load (P) at Distance (a)</h3>
+            <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;margin-bottom:10px;">
+              Taking moment about support B ($\sum M_B = 0$):
+            </p>
+            <div style="background:#f5f5f7;padding:12px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.6;">
+              RA = P × (L - a) / L<br>
+              RB = P × a / L<br>
+              M_max = (P × a × (L - a)) / L (at x = a)
+            </div>
+          </div>
+
+          <div>
+            <h3 style="font-size:17px;margin-bottom:8px;">2. Full-Span Uniform Load (UDL, w)</h3>
+            <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;margin-bottom:10px;">
+              By symmetry and vertical equilibrium ($\sum F_y = 0$):
+            </p>
+            <div style="background:#f5f5f7;padding:12px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.6;">
+              RA = RB = w × L / 2<br>
+              M(x) = (w × L × x / 2) - (w × x² / 2)<br>
+              M_max = w × L² / 8 (at midspan x = L/2)
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BuildScope AI Inc. All rights reserved.</div>
+        <div style="display:flex;gap:18px;">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/engineering-disclaimer">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/ai-engine.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/beam-calculator.js"></script>
+</body>
+</html>

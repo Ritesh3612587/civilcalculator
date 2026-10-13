@@ -1,0 +1,8 @@
+# BuildScope AI Robots.txt
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/private/
+
+# Sitemap location
+Sitemap: https://buildscope.ai/sitemap.xml

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Steel Rebar Weight Calculator & Cutting Schedule Generator | BuildScope AI</title>
+  <meta name="description" content="Calculate rebar weight in kg, metric tonnes, and lbs using the standard d²/162 formula or precise 7850 kg/m³ density. Build rebar schedules and export CSV cutting lists.">
+  <meta name="keywords" content="steel bar weight calculator, rebar weight per meter, d2 162 formula, steel rebar schedule, bar bending schedule, TMT bar weight, civil takeoff steel">
+  <link rel="canonical" href="https://buildscope.ai/tools/steel-weight-calculator">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://buildscope.ai/tools/steel-weight-calculator">
+  <meta property="og:title" content="Steel Rebar Weight Calculator & Cutting Schedule Generator | BuildScope AI">
+  <meta property="og:description" content="Calculate nominal and exact reinforcement rebar weight for civil construction. Build multi-bar cutting schedules and export to CSV.">
+  <meta property="og:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Steel Rebar Weight Calculator | BuildScope AI">
+  <meta name="twitter:description" content="Calculate nominal and exact reinforcement rebar weight for civil construction.">
+  <meta name="twitter:image" content="https://buildscope.ai/assets/images/og-image.jpg">
+
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="stylesheet" href="/css/apple-design-system.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://buildscope.ai/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Tools",
+            "item": "https://buildscope.ai/tools"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Steel Weight Calculator",
+            "item": "https://buildscope.ai/tools/steel-weight-calculator"
+          }
+        ]
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "BuildScope AI Steel Bar Weight Calculator",
+        "applicationCategory": "EngineeringApplication",
+        "operatingSystem": "All modern browsers",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      }
+    ]
+  }
+  </script>
+</head>
+<body class="bg-parchment">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="/" class="brand-link">
+        <img src="/assets/images/logo.svg" alt="BuildScope AI" width="28" height="28">
+        <span>BuildScope <span style="font-weight:400;color:var(--color-primary);">AI</span></span>
+        <span class="brand-tag">CIVIL</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="/tools" class="nav-link">Tools</a></li>
+          <li><a href="/tools/concrete-calculator" class="nav-link">Concrete</a></li>
+          <li><a href="/tools/steel-weight-calculator" class="nav-link active">Steel Rebar</a></li>
+          <li><a href="/tools/beam-calculator" class="nav-link">Beam Analysis</a></li>
+          <li><a href="/pricing" class="nav-link">Pricing</a></li>
+          <li><a href="/app" class="nav-link">Workspace Demo</a></li>
+        </ul>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="/app" class="btn btn-secondary btn-sm btn-login">Sign in</a>
+        <a href="/tools" class="btn btn-primary btn-sm">All Tools</a>
+        <button class="mobile-nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content" class="section">
+    <div class="container">
+      <nav aria-label="Breadcrumb" style="font-size:13px;color:var(--color-ink-muted-48);margin-bottom:20px;">
+        <a href="/" style="color:var(--color-ink-muted-48);">Home</a> / 
+        <a href="/tools" style="color:var(--color-ink-muted-48);">Tools</a> / 
+        <span style="color:var(--color-ink);">Steel Weight Calculator</span>
+      </nav>
+
+      <div style="margin-bottom:36px;">
+        <span class="eyebrow">Structural Reinforcement Engine</span>
+        <h1 style="font-size:clamp(32px, 4vw, 44px);margin-bottom:10px;">Steel Bar Weight & Schedule Calculator</h1>
+        <p class="lead" style="max-width:820px;">
+          Calculate weight per meter and total tonnages for standard TMT steel reinforcement bars. Build itemized rebar schedules and export compliant CSV cutting lists.
+        </p>
+      </div>
+
+      <div class="calc-layout">
+        <!-- Left Column: Form -->
+        <div class="calc-panel">
+          <h2 style="font-size:20px;margin-bottom:20px;">1. Rebar Specification</h2>
+          <form id="steel-calc-form" novalidate>
+            <div class="form-group">
+              <label for="steel-diameter-select" class="form-label">
+                <span>Nominal Bar Diameter (d)</span>
+                <span class="form-hint">Standard TMT / Deformed sizes</span>
+              </label>
+              <select id="steel-diameter-select" class="select-control">
+                <option value="8">Ø 8 mm — Shear Stirrups & Secondary Bars</option>
+                <option value="10">Ø 10 mm — Slab Reinforcement & Distribution</option>
+                <option value="12" selected>Ø 12 mm — Main Slab / Beam Rebar</option>
+                <option value="16">Ø 16 mm — Heavy Beams & Columns</option>
+                <option value="20">Ø 20 mm — Main Column & Foundation Bars</option>
+                <option value="25">Ø 25 mm — Heavy Structural Columns</option>
+                <option value="32">Ø 32 mm — Deep Foundation Piers / Retaining</option>
+                <option value="40">Ø 40 mm — Major Infrastructure & Bridges</option>
+              </select>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1.2fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label for="steel-length" class="form-label">Length per Bar</label>
+                <div class="input-with-unit">
+                  <input type="number" id="steel-length" class="input-control" value="12.0" min="0.1" step="any">
+                  <select id="steel-length-unit" class="unit-select">
+                    <option value="m" selected>m (standard 12m)</option>
+                    <option value="ft">ft</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="steel-count" class="form-label">Number of Bars</label>
+                <div class="input-with-unit">
+                  <input type="number" id="steel-count" class="input-control" value="20" min="1" step="1">
+                </div>
+              </div>
+            </div>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">
+              <div class="form-group">
+                <label for="steel-wastage" class="form-label">
+                  <span>Lapping & Scrap Wastage</span>
+                  <span class="form-hint">Typical 3% to 5%</span>
+                </label>
+                <div class="input-with-unit">
+                  <input type="number" id="steel-wastage" class="input-control" value="3.0" min="0" max="20" step="0.5">
+                  <div class="unit-addon">%</div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="steel-formula-method" class="form-label">
+                  <span>Formula Divisor</span>
+                  <span class="form-hint">Precision standard</span>
+                </label>
+                <select id="steel-formula-method" class="select-control">
+                  <option value="162.28" selected>Precise: d² / 162.28 (ρ = 7850 kg/m³)</option>
+                  <option value="162.0">Nominal: d² / 162.0 (IS 1786 Standard)</option>
+                </select>
+              </div>
+            </div>
+          </form>
+
+          <hr style="border:none;border-top:1px solid var(--color-hairline-soft);margin:28px 0;">
+
+          <!-- Add to Schedule Bar Form -->
+          <h2 style="font-size:20px;margin-bottom:12px;">Add Member to Cutting Schedule</h2>
+          <div style="display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:10px;margin-bottom:12px;">
+            <input type="text" id="sched-bar-desc" class="select-control" placeholder="Member Description (e.g. Ground Beam B1)" value="Column Tie Reinforcement">
+            <input type="number" id="sched-bar-dia" class="select-control" placeholder="Dia mm" value="8">
+            <input type="number" id="sched-bar-len" class="select-control" placeholder="Length m" value="1.6">
+            <input type="number" id="sched-bar-count" class="select-control" placeholder="Qty" value="48">
+          </div>
+          <button type="button" id="btn-add-schedule-bar" class="btn btn-secondary btn-sm" style="width:100%;">+ Add Row to Rebar Schedule</button>
+        </div>
+
+        <!-- Right Column: Results Panel -->
+        <div class="calc-results-panel" id="steel-summary-card">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+            <span class="eyebrow" style="margin-bottom:0;">Calculated Output</span>
+            <button class="btn btn-sm btn-secondary" data-copy-target="steel-summary-card">Copy Results</button>
+          </div>
+
+          <!-- Hero Metric: Gross Weight -->
+          <div class="metric-card-hero">
+            <div class="metric-label">Total Reinforcement Weight (With Wastage)</div>
+            <div class="metric-value-huge">
+              <span id="res-steel-total-kg">219.04</span><span class="metric-unit">kg</span>
+            </div>
+            <div style="font-size:14px;color:var(--color-ink-muted-48);margin-top:4px;">
+              <span id="res-steel-total-tonnes">0.219 MT</span> (Metric Tonnes) • <span id="res-steel-lbs">482.9 lbs</span>
+            </div>
+          </div>
+
+          <!-- Subcards -->
+          <div class="metrics-subgrid">
+            <div class="metric-subcard">
+              <div class="metric-label">Unit Weight (Per Meter)</div>
+              <div class="metric-subvalue" id="res-steel-unit-weight">0.887 kg/m</div>
+            </div>
+            <div class="metric-subcard">
+              <div class="metric-label">Single Bar Weight</div>
+              <div class="metric-subvalue" id="res-steel-single-bar">10.65 kg</div>
+            </div>
+          </div>
+
+          <div style="background:#fff;border:1px solid var(--color-hairline-soft);border-radius:var(--radius-sm);overflow:hidden;margin-bottom:20px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid #f0f0f0;">
+              <span style="font-size:14px;color:var(--color-ink-muted-80);">Net Theoretical Weight</span>
+              <strong id="res-steel-net-weight" style="color:var(--color-ink);">212.66 kg</strong>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;">
+              <span style="font-size:14px;color:var(--color-ink-muted-80);">Total Cumulative Length</span>
+              <strong id="res-steel-total-length" style="color:var(--color-ink);">240.00 m (787.4 ft)</strong>
+            </div>
+          </div>
+
+          <!-- Real-Time Interactive Rebar Studio Visualizer -->
+          <div class="viz-card" style="padding:18px;">
+            <div class="viz-header">
+              <div class="viz-title-group">
+                <span class="viz-title">Real-Time Rebar Studio</span>
+                <span class="viz-live-indicator"><span class="viz-live-dot"></span> 60 FPS Interactive</span>
+              </div>
+              <div class="segmented-control" style="margin-bottom:0;padding:2px;">
+                <button type="button" class="segmented-option steel-mode-btn active" data-mode="profile" style="padding:4px 10px;font-size:12px;">3D Profile</button>
+                <button type="button" class="segmented-option steel-mode-btn" data-mode="shape" style="padding:4px 10px;font-size:12px;">Bending Shape</button>
+                <button type="button" class="segmented-option steel-mode-btn" data-mode="breakdown" style="padding:4px 10px;font-size:12px;">Tonnage Chart</button>
+              </div>
+            </div>
+
+            <div class="viz-canvas-wrapper">
+              <canvas id="steel-canvas-studio" class="viz-canvas" width="700" height="340"></canvas>
+              <div class="viz-hud-overlay" id="steel-hud-badge">
+                <strong>Ø12 mm Fe 500D</strong> • 0.887 kg/m • Total 219.0 kg
+              </div>
+            </div>
+
+            <div class="viz-controls-bar">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <span style="color:var(--color-ink-muted-48);">Shape Code:</span>
+                <select id="steel-shape-code-select" class="select-control" style="padding:4px 10px;font-size:12px;width:auto;">
+                  <option value="11" selected>Shape 11: L-Bend / 90° Hook</option>
+                  <option value="00">Shape 00: Straight Bar</option>
+                  <option value="51">Shape 51: Column/Beam Stirrup Link (135°)</option>
+                  <option value="21">Shape 21: U-Bar 180° Standard Hook</option>
+                </select>
+              </div>
+              <div style="font-size:12px;color:var(--color-ink-muted-48);">
+                IS 2502 / BS 8666 standard bend deductions
+              </div>
+            </div>
+          </div>
+
+          <div class="engineering-callout">
+            <strong>Tolerance & Rolling Margin Note:</strong> IS 1786 and BS 4449 allow rolling margins of ±4% to ±7% on nominal bar weight depending on diameter. Theoretical bar weight calculated via formulas serves for procurement, bending schedules, and structural estimation; delivered bundle weights will be measured on weighbridges at delivery.
+          </div>
+        </div>
+      </div>
+
+      <!-- Itemized Rebar Cutting Schedule Table -->
+      <section class="card" style="margin-top:48px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:20px;">
+          <div>
+            <span class="eyebrow" style="margin-bottom:4px;">Multi-Member Takeoff</span>
+            <h2 style="font-size:24px;">Project Rebar Cutting Schedule</h2>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div style="font-size:14px;color:var(--color-ink-muted-80);">Schedule Total: <strong id="sched-total-weight" style="color:var(--color-primary);font-size:16px;">0.00 kg</strong></div>
+            <button type="button" id="btn-export-rebar-csv" class="btn btn-primary btn-sm">Export Schedule CSV</button>
+          </div>
+        </div>
+
+        <div style="overflow-x:auto;">
+          <table style="width:100%;border-collapse:collapse;font-size:14px;text-align:left;">
+            <thead>
+              <tr style="background:var(--color-canvas-parchment);border-bottom:1px solid var(--color-hairline);">
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);">Item Description</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:center;">Diameter</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:right;">Length/Bar</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:right;">Count</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:right;">Wastage</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:right;">Total Weight</th>
+                <th style="padding:10px 12px;font-weight:600;color:var(--color-ink);text-align:center;">Action</th>
+              </tr>
+            </thead>
+            <tbody id="schedule-table-body">
+              <!-- Dynamically populated by JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Engineering Derivation Article -->
+      <section class="card" style="margin-top:40px;">
+        <h2 style="font-size:22px;margin-bottom:14px;">Mathematical Derivation of the d² / 162 Formula</h2>
+        <p style="font-size:14px;color:var(--color-ink-muted-80);line-height:1.6;margin-bottom:12px;">
+          The empirical civil engineering formula $W = d^2 / 162$ is derived directly from the fundamental physics of a cylindrical steel bar with nominal density $\rho = 7850\text{ kg/m}^3$:
+        </p>
+        <div style="background:#f5f5f7;padding:16px;border-radius:8px;font-family:var(--font-mono);font-size:13px;line-height:1.7;">
+          Volume of 1 meter bar = π × (d / 2000)² × 1 = (π / 4,000,000) × d² m³<br>
+          Weight = Volume × Density = (π / 4,000,000) × d² × 7850 kg<br>
+          Weight = (7850 × 3.14159265 / 4,000,000) × d² = 0.00616537 × d²<br>
+          Weight = d² / (1 / 0.00616537) = d² / 162.197 ≈ d² / 162.28 kg/m
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>© 2026 BuildScope AI Inc. All rights reserved.</div>
+        <div style="display:flex;gap:18px;">
+          <a href="/privacy">Privacy</a>
+          <a href="/terms">Terms</a>
+          <a href="/engineering-disclaimer">Disclaimer</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="/js/ai-engine.js"></script>
+  <script src="/js/common.js"></script>
+  <script src="/js/steel-calculator.js"></script>
+</body>
+</html>

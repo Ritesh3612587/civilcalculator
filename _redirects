@@ -1,0 +1,25 @@
+# Cloudflare Pages Redirects & Clean Route Configuration
+
+# Canonical 301 redirects for .html extension to clean URLs
+/tools.html                   /tools                       301
+/concrete-calculator.html     /tools/concrete-calculator   301
+/steel-weight-calculator.html /tools/steel-weight-calculator 301
+/beam-calculator.html         /tools/beam-calculator       301
+/pricing.html                 /pricing                     301
+/contact.html                 /contact                     301
+/app.html                     /app                         301
+/privacy.html                 /privacy                     301
+/terms.html                   /terms                       301
+/engineering-disclaimer.html  /engineering-disclaimer      301
+
+# Subdirectory clean URL routing fallbacks
+/tools/concrete-calculator    /tools/concrete-calculator/index.html 200
+/tools/steel-weight-calculator /tools/steel-weight-calculator/index.html 200
+/tools/beam-calculator        /tools/beam-calculator/index.html 200
+/tools                        /tools/index.html            200
+/pricing                      /pricing/index.html          200
+/contact                      /contact/index.html          200
+/app                          /app/index.html              200
+/privacy                      /privacy/index.html          200
+/terms                        /terms/index.html            200
+/engineering-disclaimer       /engineering-disclaimer/index.html 200

@@ -1,0 +1,19 @@
+{
+  "name": "buildscope-ai",
+  "version": "1.0.0",
+  "description": "BuildScope AI — Precision Civil Engineering Calculators & Construction Platform",
+  "scripts": {
+    "dev": "npx serve . -l 3000",
+    "preview": "npx wrangler pages dev .",
+    "deploy": "npx wrangler pages deploy . --project-name=buildscope-ai"
+  },
+  "keywords": [
+    "civil-engineering",
+    "concrete-calculator",
+    "rebar-weight",
+    "beam-analysis",
+    "cloudflare-pages"
+  ],
+  "author": "BuildScope AI",
+  "license": "UNLICENSED"
+}
